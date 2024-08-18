@@ -18,3 +18,8 @@
     - Search Bar
     - Movie Suggestions
  
+
+# Firebase commands
+    - create build using (npm run build)
+    - firebase deploy
+    - Hosting URL: https://netflixgpt-75d22.web.app
