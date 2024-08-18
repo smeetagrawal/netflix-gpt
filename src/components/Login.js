@@ -5,9 +5,16 @@ import { auth } from "../utils/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../redux/userSlice";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState();
   const emailRef = useRef(null);
@@ -21,25 +28,36 @@ const Login = () => {
 
   const handleSignIn = async (email, password) => {
     try {
-      const newUser = await signInWithEmailAndPassword(auth, email, password);
-      console.log("newUser", newUser);
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/browse");
     } catch (error) {
-      console.error("error", error.message);
-      setErrorMessage(error.message);
+      setErrorMessage(
+        error.code === "auth/invalid-credential"
+          ? "Invalid credentials"
+          : "Something went wrong"
+      );
     }
   };
 
-  const handleSignUp = async (email, password) => {
+  const handleSignUp = async (name, email, password) => {
     try {
       const newUser = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      console.log("newUser", newUser);
+      await updateProfile(newUser.user, {
+        displayName: name,
+      });
+      const { uid, displayName, email: updatedEmail } = auth?.currentUser;
+      dispatch(addUser({ uid, displayName, email: updatedEmail }));
+      navigate("/browse");
     } catch (error) {
-      console.error("error", error.message);
-      setErrorMessage(error.message);
+      setErrorMessage(
+        error.code === "auth/email-already-in-use"
+          ? "Email already exists"
+          : "Something went wrong"
+      );
     }
   };
 
@@ -58,7 +76,7 @@ const Login = () => {
       handleSignIn(email, password);
     } else {
       // will create new user
-      handleSignUp(email, password);
+      handleSignUp(name, email, password);
     }
   };
 

@@ -2,8 +2,6 @@ import { Provider } from "react-redux";
 import Body from "./components/Body";
 import appStore from "./redux/appStore";
 
-console.log("process .env", process.env);
-
 function App() {
   return (
     <Provider store={appStore}>
