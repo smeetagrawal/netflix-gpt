@@ -7,12 +7,10 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../redux/userSlice";
 
 const Login = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -29,7 +27,6 @@ const Login = () => {
   const handleSignIn = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/browse");
     } catch (error) {
       setErrorMessage(
         error.code === "auth/invalid-credential"
@@ -51,7 +48,6 @@ const Login = () => {
       });
       const { uid, displayName, email: updatedEmail } = auth?.currentUser;
       dispatch(addUser({ uid, displayName, email: updatedEmail }));
-      navigate("/browse");
     } catch (error) {
       setErrorMessage(
         error.code === "auth/email-already-in-use"
