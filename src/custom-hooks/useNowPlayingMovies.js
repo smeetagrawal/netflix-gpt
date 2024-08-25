@@ -8,8 +8,7 @@ const useNowPlayingMovies = () => {
 
   const getNowPlayingMovies = async () => {
     try {
-      const url =
-        "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1";
+      const url = "https://api.themoviedb.org/3/movie/now_playing?page=1";
       const response = await fetch(url, API_OPTIONS);
       const data = await response.json();
       dispatch(addNowPlayingMovies(data.results));
