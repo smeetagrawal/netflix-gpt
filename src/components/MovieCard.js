@@ -7,7 +7,7 @@ const MovieCard = (props) => {
   if (!posterPath) return null;
 
   return (
-    <div className="w-48">
+    <div className="w-36 md:w-48">
       <img
         alt="Movie card"
         src={IMAGE_CDN_PREFIX + posterPath}
