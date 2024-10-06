@@ -4,6 +4,8 @@ import { IMAGE_CDN_PREFIX } from "../utils/constants";
 const MovieCard = (props) => {
   const { posterPath } = props;
 
+  if (!posterPath) return null;
+
   return (
     <div className="w-48">
       <img
